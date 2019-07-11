@@ -61,43 +61,47 @@ const followersArray = [];
 
 */
 
-let cards = document.querySelectorAll('.card');
+let cards = document.querySelectorAll('.cards');
 
-cards.forEach(card => {
-  new card(article)
-}
-)
-
-function newcard(title,date,text) {
+function newcard(img,name,username,loca,gitpage,foll,fing,bio) {
   const divCard = document.createElement('div');
   const cardImg = document.createElement('img');
   const divInfo = document.createElement('div');
   const h3 = document.createElement('h3');
-  const pName = document.createElement('p');
+  const pUName = document.createElement('p');
   const pLoca = document.createElement('p');
   const pProf = document.createElement('p');
+  const aProf = document.createElement('a');
   const pFoll = document.createElement('p');
   const pFing = document.createElement('p');
   const pBio = document.createElement('p');
   divCard.classList.add('card')
   divInfo.classList.add('card-info')
   h3.classList.add('name')
-  pName.classList.add('username')
+  pUName.classList.add('username')
 
-  h2.innerHTML = title;
-pDate.innerHTML = date;
-divcards.appendChild(divcard)
-divcard.appendChild(h2)
-divcard.appendChild(pDate)
-for (i=0; i<text.length; i++)
-{
-  divcard.appendChild(p[i])
-  if(typeof(text) != 'object')
-{break;}
-}
-divcard.appendChild(expandButton)
+  cardImg.src = img;
+h3.innerHTML = name;
+pUName.innerHTML = username;
+pLoca.innerHTML = loca;
+aProf.href = gitpage;
+pFoll.innerHTML = foll;
+pFing.innerHTML = fing;
+pBio.innerHTML = bio;
 
-return divcard
+cards.appendChild(divCard)
+divCard.appendChild(cardImg)
+divCard.appendChild(divInfo)
+divInfo.appendChild(h3)
+divInfo.appendChild(pUName)
+divInfo.appendChild(pLoca)
+divInfo.appendChild(pProf)
+pProf.appendChild(aProf)
+divInfo.appendChild(pFoll)
+divInfo.appendChild(pFing)
+divInfo.appendChild(pBio)
+
+return divCard
 }
 
 
