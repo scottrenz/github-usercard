@@ -1,23 +1,26 @@
-/* Step 1: using axios, send a GET request to the following URL 
-           (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
-https://github.com/axios/axios
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-           */
-   axios.get('https://api.github.com/users/scottrenz')
-   .then (data => {
-       console.log('response',data)
-   }
-       
-       )
-   .catch (data => {
-           console.log('error',data)
-       }
-           
-           )
-           console.log('end') 
+const gitUsers = [];
+gitUsers[0]='tetondan';
+gitUsers[1]='dustinmyers';
+gitUsers[2]='justsml';
+gitUsers[3]='luishrd';
+gitUsers[4]='bigknell';
+gitUsers[5]='scottrenz';
 
+let img=[];
+let name=[];
+let bio=[];
+let username=[];
+let gitpage=[];
+let loca=[];
+let foll=[];
+let fing=[];
+let i=[];
+
+for (i=0; i<gitUsers.length;i++)
+{ 
+  getFollowers(gitUsers[i])
+}
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -83,13 +86,15 @@ function newcard(img,name,username,loca,gitpage,foll,fing,bio) {
   cardImg.src = img;
 h3.innerHTML = name;
 pUName.innerHTML = username;
-pLoca.innerHTML = loca;
+pLoca.innerHTML = 'Location: ' + loca;
+pProf.innerHTML = 'Profile: ';
 aProf.href = gitpage;
-pFoll.innerHTML = foll;
-pFing.innerHTML = fing;
-pBio.innerHTML = bio;
+aProf.innerHTML = gitpage;
+pFoll.innerHTML = 'Followers: ' + foll;
+pFing.innerHTML = 'Following: ' + fing;
+pBio.innerHTML = 'Bio: ' + bio;
 
-cards.appendChild(divCard)
+cards[0].appendChild(divCard)
 divCard.appendChild(cardImg)
 divCard.appendChild(divInfo)
 divInfo.appendChild(h3)
@@ -104,11 +109,62 @@ divInfo.appendChild(pBio)
 return divCard
 }
 
+async function getUser(user,fr,fg) {
+const wait = await axios.get('https://api.github.com/users/' + user)
+.then (data => {
+img = data.data['avatar_url'];
+name = data.data['name'];
+bio = data.data['bio']
+username = data.data['login']
+gitpage = data.data['html_url']
+loca = data.data['location']
+foll = fr;
+fing = fg;
+newcard(img,name,username,loca,gitpage,foll,fing,bio)
+ return wait;
+}
+)
 
+  .catch (data => {
+  console.log('data error',data)
+        }
+         )
+}
+
+async function getFollowers(user) {
+  const wait = await axios.get('https://api.github.com/users/' + user + '/followers')
+  .then (data => {
+let foll=data.data.length;
+getFollowing(user,foll)
+return wait;
+  }
+  )
+
+  .catch (data => {
+    console.log('followers error',data)
+          }
+           )
+  }
+
+  async function getFollowing(user,foll) {
+   const wait = await axios.get('https://api.github.com/users/' + user + '/following')
+    .then (data => {
+let fing=data.data.length;
+getUser(user,foll,fing)
+return wait;
+    }
+    )
+
+  .catch (data => {
+    console.log('following error',data)
+          }
+           )
+  }
+      
 /* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
+  tetondan  Daniel Frehner
+  dustinmyers Dustin Myers
+  justsml Dan Levy
+  luishrd Luis Hernandez
+  bigknell Josh Knell
 */
