@@ -27,7 +27,7 @@ let i=[];
 
 for (i=0; i<gitUsers.length;i++)
 { 
-  getFollowers(gitUsers[i])
+  getFollowers(gitUsers[i],0,1)
 }
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -139,21 +139,6 @@ newcard(img,name,username,loca,gitpage,foll,fing,bio)
          )
 }
 
-async function getFollowers(user) {
-  const wait = await axios.get('https://api.github.com/users/' + user + '/followers')
-  .then (data => {
-let foll=data.data.length;
-getFollowing(user,foll)
-return wait;
-  }
-  )
-
-  .catch (data => {
-    console.log('followers error',data)
-          }
-           )
-  }
-
   async function getFollowing(user,foll) {
    const wait = await axios.get('https://api.github.com/users/' + user + '/following')
     .then (data => {
@@ -176,3 +161,60 @@ return wait;
   luishrd Luis Hernandez
   bigknell Josh Knell
 */
+
+async function getFollowers(user, fw,j) {
+  let foll = 0;
+  let wait;
+  // https://api.github.com/users/bigknell/followers?per_page=100&page=2
+wait = await axios.get('https://api.github.com/users/' + user + '/followers?per_page=100&page=' + j)
+.then (data =>   
+    { 
+    if(data.data.length < 100)
+{ 
+   foll = fw + data.data.length;
+getFollowing(user,foll,0,1)
+return wait;}
+else
+{
+fw = fw + 100;
+j = j + 1
+getFollowers(user,fw,j)
+
+}
+    } 
+)
+
+  .catch (data => { 
+    console.log('followers error',data)
+          }
+           )
+  }
+
+  async function getFollowing(user,foll,fw,j) {
+    let fing = 0;
+    let wait;
+    // https://api.github.com/users/bigknell/followers?per_page=100&page=2
+  wait = await axios.get('https://api.github.com/users/' + user + '/following?per_page=100&page=' + j)
+  .then (data =>   
+      { 
+      if(data.data.length < 100)
+  { 
+     fing = fw + data.data.length;
+     getUser(user,foll,fing)
+     return wait;}
+  else
+  {
+  fw = fw + 100;
+  j = j + 1
+  getFollowing(user,foll,fw,j)
+  
+  }
+      } 
+  )
+  
+    .catch (data => { 
+      console.log('followers error',data)
+            }
+             )
+    }
+  
