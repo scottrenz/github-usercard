@@ -138,21 +138,6 @@ newcard(img,name,username,loca,gitpage,foll,fing,bio)
         }
          )
 }
-
-  async function getFollowing(user,foll) {
-   const wait = await axios.get('https://api.github.com/users/' + user + '/following')
-    .then (data => {
-let fing=data.data.length;
-getUser(user,foll,fing)
-return wait;
-    }
-    )
-
-  .catch (data => {
-    console.log('following error',data)
-          }
-           )
-  }
       
 /* List of LS Instructors Github username's: 
   tetondan  Daniel Frehner
